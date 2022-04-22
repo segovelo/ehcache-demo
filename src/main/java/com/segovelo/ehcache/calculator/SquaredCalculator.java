@@ -11,12 +11,12 @@ public class SquaredCalculator {
 
     public int getSquareValueOfNumber(int input) {
         if (cache.getSquareNumberCache().containsKey(input)) {
-        	LOGGER.debug("Retrieving square value of {} from cache.", input);
+        	LOGGER.info("Retrieving square value of {} from cache.", input);
         	System.out.println("Retrieving square value of " + input +" from cache.");
             return cache.getSquareNumberCache().get(input);
         }
 
-        LOGGER.debug("Calculating square value of {} and caching result.", input);
+        LOGGER.info("Calculating square value of {} and caching result.", input);
         System.out.println("Calculating square value of " + input + " and caching result.");
         
         int squaredValue = (int) Math.pow(input, 2);
