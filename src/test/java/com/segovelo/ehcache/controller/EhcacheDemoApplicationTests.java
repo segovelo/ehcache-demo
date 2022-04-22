@@ -10,8 +10,8 @@ import com.segovelo.ehcache.calculator.SquaredCalculator;
 @SpringBootTest
 class EhcacheDemoApplicationTests {
 
-	private CacheHelper cacheHelper; 
-	private SquaredCalculator squaredCalculator;
+	private CacheHelper cacheHelper =  new CacheHelper(); 
+	private SquaredCalculator squaredCalculator = new SquaredCalculator();
 	
 	@Test
 	void contextLoads() {
@@ -19,6 +19,7 @@ class EhcacheDemoApplicationTests {
 	
 	@Test
 	public void whenCalculatingSquareValueAgain_thenCacheHasAllValues() {
+		squaredCalculator.setCache(cacheHelper);
 	    for (int i = 10; i < 15; i++) {
 	        assertFalse(cacheHelper.getSquareNumberCache().containsKey(i));
 	        System.out.println("Square value of " + i + " is: "
