@@ -1,4 +1,4 @@
-package com.segovelo.calculator;
+package com.segovelo.ehcache.calculator;
 
 import com.segovelo.ehcache.config.CacheHelper;
 import org.slf4j.Logger;
@@ -11,6 +11,7 @@ public class SquaredCalculator {
 
     public int getSquareValueOfNumber(int input) {
         if (cache.getSquareNumberCache().containsKey(input)) {
+        	LOGGER.debug("Retrieving square value of {} from cache.", input);
             return cache.getSquareNumberCache().get(input);
         }
 
