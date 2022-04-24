@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.segovelo.ehcache.model.ServiceResponse;
 import com.segovelo.ehcache.service.SquaredNumberService;
 
 @RestController
@@ -23,9 +24,10 @@ public class SquaredNumberController {
     private SquaredNumberService numberService;
 
     @GetMapping(path = "/square/{number}")
-    public String getThing(@PathVariable Long number) {
+    public String getSquaredNumber(@PathVariable Long number) {
         log.info("call numberService to square {}", number);
-        return String.format("{\"square\": %s}", numberService.square(number));
+        ServiceResponse response = numberService.square(number);
+        return String.format("{\"square\": %s  \"message\": %s }", response.getSquared(), response.getMessage());
     }
 
 }
