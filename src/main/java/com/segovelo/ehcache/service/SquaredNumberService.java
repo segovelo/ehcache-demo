@@ -23,7 +23,7 @@ public class SquaredNumberService extends CacheableService {
         
         response.setSquared(square);
         //response.setMessage("Computing squared number in service and caching");
-        log.info("square of {} is {}", number, square);
+        log.info("Computing squared number of {} is {} in service and caching", number, square);
         return response;
     }
     
