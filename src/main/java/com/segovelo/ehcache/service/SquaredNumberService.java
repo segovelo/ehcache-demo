@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,14 @@ public class SquaredNumberService extends CacheableService {
             .multiply(BigDecimal.valueOf(number));
         
         response.setSquared(square);
-        response.setMessage("Computing squared number in service and caching");
+        //response.setMessage("Computing squared number in service and caching");
         log.info("square of {} is {}", number, square);
         return response;
+    }
+    
+    @CacheEvict(value="directory", key="#number", condition = "#number>10")
+    public String getEvictCache(Long number) { 
+    	return "Clearing the Cache";
     }
 
 }

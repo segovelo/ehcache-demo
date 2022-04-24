@@ -29,5 +29,11 @@ public class SquaredNumberController {
         ServiceResponse response = numberService.square(number);
         return String.format("{\"square\": %s  \"message\": %s }", response.getSquared(), response.getMessage());
     }
+    
+    @GetMapping(path = "/evict/{number}")
+    public String getEvictCache(@PathVariable Long number) {
+    	return numberService.getEvictCache(number);
+    }
+    
 
 }
