@@ -1,0 +1,7 @@
+GET http://localhost:8080/number/square/5 HTTP/1.1
+Accept-Encoding: gzip,deflate
+Authorization: Bearer isjsh58js2kFVN5X35667cKJ29SHKCVNMHqhkf402sdfg
+Correlation-ID: c5e669d3-3cc0-4e9f-a3c8-a70967e8b775
+Host: localhost:8080
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.5 (Java/16.0.1)
