@@ -27,6 +27,10 @@ public class SquaredNumberController {
     public String getSquaredNumber(@PathVariable Long number) {
         log.info("call numberService to square {}", number);
         ServiceResponse response = numberService.square(number);
+        if(numberService.isCacheHit(number)) {
+        	response.setMessage(String.format("Squared number of %s retrieved from cache", String.valueOf(number)));
+        	log.info("Squared number of {} retrieved from cache", String.valueOf(number));
+        }
         return String.format("{\"square\": %s  \"message\": %s }", response.getSquared(), response.getMessage());
     }
     

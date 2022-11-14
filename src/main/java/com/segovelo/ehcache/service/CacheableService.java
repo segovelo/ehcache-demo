@@ -1,5 +1,7 @@
 package com.segovelo.ehcache.service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -11,17 +13,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @SuppressWarnings("unused")
 public abstract class CacheableService {
 
-	private final AtomicBoolean cacheMiss = new AtomicBoolean(false);
+	protected final Map<String, AtomicBoolean> cacheMissMap = new HashMap<String, AtomicBoolean>();
 
-	public boolean isCacheHit() {
-		return !isCacheMiss();
+	public boolean isCacheHit(Long number) {
+		return !isCacheMiss(number);
 	}
 
-	public boolean isCacheMiss() {
-		return this.cacheMiss.compareAndSet(true, false);
+	public boolean isCacheMiss(Long number) {
+		if(cacheMissMap.containsKey(String.valueOf(number))) {
+			return this.cacheMissMap.get(String.valueOf(number)).compareAndSet(false, true);
+		}
+		return true;
 	}
 
-	protected void setCacheMiss() {
-		this.cacheMiss.set(true);
+	protected void setCacheMiss(Long number, Boolean bool) {
+		this.cacheMissMap.get(String.valueOf(number)).set(bool);
 	}
 }
