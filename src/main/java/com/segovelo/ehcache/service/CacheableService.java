@@ -27,6 +27,20 @@ public abstract class CacheableService {
 	}
 
 	protected void setCacheMiss(Long number, Boolean bool) {
-		this.cacheMissMap.get(String.valueOf(number)).set(bool);
+		if(cacheMissMap.containsKey(String.valueOf(number))) {
+			this.cacheMissMap.get(String.valueOf(number)).set(bool);
+		}
 	}
+	protected AtomicBoolean putCache(Long number) {
+		AtomicBoolean cacheMiss = new AtomicBoolean(false);
+		return this.cacheMissMap.put(String.valueOf(number), cacheMiss);
+	}
+	protected boolean removeCache(Long number) {
+		AtomicBoolean cacheMiss = new AtomicBoolean(false);
+		if(cacheMissMap.containsKey(String.valueOf(number))) {
+			return this.cacheMissMap.remove(String.valueOf(number)).get();
+		}
+		return false;
+	}
+
 }
