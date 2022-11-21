@@ -42,4 +42,14 @@ public abstract class CacheableService {
 		return false;
 	}
 
+	protected boolean isEmpty() {
+		return this.cacheMissMap.isEmpty();
+	}
+	
+	protected boolean clear() {
+		if(this.isEmpty())
+			return false;
+		this.cacheMissMap.clear();
+		return true;
+	}
 }
