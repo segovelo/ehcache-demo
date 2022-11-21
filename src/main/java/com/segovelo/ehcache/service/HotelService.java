@@ -7,6 +7,8 @@ package com.segovelo.ehcache.service;
 * @author Segovelo  **/
 import com.segovelo.ehcache.repository.HotelRepository;
 import com.segovelo.ehcache.model.Hotel;
+import com.segovelo.ehcache.model.HotelResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -25,11 +27,12 @@ public class HotelService extends HotelCacheableService {
     }
 
     @Cacheable("hotels")
-    public List<Hotel> getAllHotels() {
+    public HotelResponse getAllHotels() {
     	List<Hotel> hotels = hotelRepository.getAllHotels();
     	hotels.forEach(hotel -> this.putCache(hotel.getId()));
     	LOGGER.info("Retrieving Hotel list from DataBase");
-        return hotels;
+    	HotelResponse response = new HotelResponse(hotels,"Hotel list retrieved from Database.");
+        return response;
     }
 
     @CacheEvict(value = "hotels", allEntries = true)

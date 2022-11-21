@@ -8,6 +8,7 @@ package com.segovelo.ehcache.controller;
 
 import com.segovelo.ehcache.service.HotelService;
 import com.segovelo.ehcache.model.Hotel;
+import com.segovelo.ehcache.model.HotelResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +35,15 @@ public class HotelController {
 
 	  @GetMapping
 	  @ResponseStatus(HttpStatus.OK)
-	  public List<Hotel> getAllHotels() {
-	    List<Hotel> hotels = hotelService.getAllHotels();
+	  
+	  public HotelResponse getAllHotels() {
+	    HotelResponse hotelResponse = hotelService.getAllHotels();
+	    List<Hotel> hotels = hotelResponse.getHotels();
 	    if(hotels != null && !hotels.isEmpty() && hotelService.isCacheHit(hotels.get(0).getId())) {
-	    	LOGGER.info("Retrieving Hotel list from cache");
-	    }
-	    
-	    return hotels;
+	    	hotelResponse.setMessage("Hotel list retrieved from Cache.");
+	    	LOGGER.info("Retrieving Hotel list from cache...");
+	    }	    
+	    return hotelResponse;
 	  }
 
 }
