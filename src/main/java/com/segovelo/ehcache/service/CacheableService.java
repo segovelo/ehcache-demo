@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @SuppressWarnings("unused")
 public abstract class CacheableService {
 
-	protected final Map<String, AtomicBoolean> cacheMissMap = new HashMap<String, AtomicBoolean>();
+	private final Map<String, AtomicBoolean> cacheMissMap = new HashMap<String, AtomicBoolean>();
 
 	public boolean isCacheHit(Long number) {
 		return !isCacheMiss(number);
@@ -36,7 +36,6 @@ public abstract class CacheableService {
 		return this.cacheMissMap.put(String.valueOf(number), cacheMiss);
 	}
 	protected boolean removeCache(Long number) {
-		AtomicBoolean cacheMiss = new AtomicBoolean(false);
 		if(cacheMissMap.containsKey(String.valueOf(number))) {
 			return this.cacheMissMap.remove(String.valueOf(number)).get();
 		}
