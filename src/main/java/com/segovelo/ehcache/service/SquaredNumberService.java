@@ -11,7 +11,7 @@ import com.segovelo.ehcache.model.ServiceResponse;
 @Service
 public class SquaredNumberService extends CacheableService {
 
-    private final static Logger log = LoggerFactory.getLogger(SquaredNumberService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(SquaredNumberService.class);
 
     @Cacheable(value = "squareCache", key = "#number", condition = "#number>10")
     public ServiceResponse square(Long number) {
@@ -23,11 +23,11 @@ public class SquaredNumberService extends CacheableService {
         if(number > 10) {
         	this.putCache(number);
 	        response.setMessage(String.format("Computing squared number of %s in service layer and caching", String.valueOf(number)));
-	        log.info("Computing squared number of {} is {} in service and caching", number, square);
+	        LOGGER.info("Computing squared number of {} is {} in service and caching", number, square);
         }
         else {
 	        response.setMessage(String.format("Number %s in service layer, does not verify condition", String.valueOf(number)));
-	        log.info("Squared number of {} is {} in service and does not verify condition", number, square);
+	        LOGGER.info("Squared number of {} is {} in service and does not verify condition", number, square);
         	
         }
         return response;
@@ -37,10 +37,10 @@ public class SquaredNumberService extends CacheableService {
     public String getEvictCache(Long number) { 
     	
     	if(this.removeCache(number)) {
-    		log.info("Removing squared number of {} from caching", number);
+    		LOGGER.info("Removing squared number of {} from caching", number);
     		return String.format("Clearing number %s from Cache", String.valueOf(number));
     	}
-    	log.info("Clearing Failed, Number {} not present in Cache", number);
+    	LOGGER.info("Clearing Failed, Number {} not present in Cache", number);
     	return String.format("Clearing Failed, Number %s not present in Cache", String.valueOf(number));
     }
 

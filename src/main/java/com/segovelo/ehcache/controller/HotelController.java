@@ -8,6 +8,9 @@ package com.segovelo.ehcache.controller;
 
 import com.segovelo.ehcache.service.HotelService;
 import com.segovelo.ehcache.model.Hotel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,8 @@ import java.util.List;
 @RequestMapping("/hotel")
 public class HotelController {
 	
+	private final static Logger LOGGER = LoggerFactory.getLogger(HotelController.class);
+	//@Autowired
 	private final HotelService hotelService;
 
 	  @Autowired
@@ -30,7 +35,12 @@ public class HotelController {
 	  @GetMapping
 	  @ResponseStatus(HttpStatus.OK)
 	  public List<Hotel> getAllHotels() {
-	    return hotelService.getAllHotels();
+	    List<Hotel> hotels = hotelService.getAllHotels();
+	    if(hotels != null && !hotels.isEmpty() && hotelService.isCacheHit(hotels.get(0).getId())) {
+	    	LOGGER.info("Retrieving Hotel list from cache");
+	    }
+	    
+	    return hotels;
 	  }
 
 }

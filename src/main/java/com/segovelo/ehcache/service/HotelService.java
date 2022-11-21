@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class HotelService {
+public class HotelService extends HotelCacheableService {
     private final HotelRepository hotelRepository;
-    Logger logger = LoggerFactory.getLogger(HotelService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HotelService.class);
 
     HotelService(HotelRepository hotelRepository) {
         this.hotelRepository = hotelRepository;
@@ -26,13 +26,23 @@ public class HotelService {
 
     @Cacheable("hotels")
     public List<Hotel> getAllHotels() {
-        return hotelRepository.getAllHotels();
+    	List<Hotel> hotels = hotelRepository.getAllHotels();
+    	hotels.forEach(hotel -> this.putCache(hotel.getId()));
+    	LOGGER.info("Retrieving Hotel list from DataBase");
+        return hotels;
     }
 
     @CacheEvict(value = "hotels", allEntries = true)
     @Scheduled(fixedRateString = "${caching.spring.hotelListTTL}")
     public void emptyHotelsCache() {
-        logger.info("emptying Hotels cache");
+        LOGGER.info("Clearing Hotels cache ... ");
+        if(this.isEmpty()) {
+        	LOGGER.info("Clearing the Hotel cache failed. The Hotel cache was empty");
+        }
+        else {
+        	this.clear();
+        	LOGGER.info("Clearing the Hotel cache was successful.");	
+        }       
     }
 
 }

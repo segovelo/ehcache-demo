@@ -18,18 +18,18 @@ import com.segovelo.ehcache.service.SquaredNumberService;
 @RequestMapping(path = "/number", produces = MediaType.APPLICATION_JSON_VALUE)//APPLICATION_JSON_UTF8_VALUE)
 public class SquaredNumberController {
 
-    private final static Logger log = LoggerFactory.getLogger(SquaredNumberController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(SquaredNumberController.class);
 
     @Autowired
     private SquaredNumberService numberService;
 
     @GetMapping(path = "/square/{number}")
     public String getSquaredNumber(@PathVariable Long number) {
-        log.info("call numberService to square {}", number);
+        LOGGER.info("call numberService to square {}", number);
         ServiceResponse response = numberService.square(number);
         if(numberService.isCacheHit(number)) {
         	response.setMessage(String.format("Squared number of %s retrieved from cache", String.valueOf(number)));
-        	log.info("Squared number of {} retrieved from cache", String.valueOf(number));
+        	LOGGER.info("Squared number of {} retrieved from cache", String.valueOf(number));
         }
         return String.format("{\"square\": %s  \"message\": %s }", response.getSquared(), response.getMessage());
     }
