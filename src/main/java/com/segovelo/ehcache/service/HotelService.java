@@ -30,6 +30,7 @@ public class HotelService extends HotelCacheableService {
     public HotelResponse getAllHotels() {
     	List<Hotel> hotels = hotelRepository.getAllHotels();
     	hotels.forEach(hotel -> this.putCache(hotel.getId()));
+    	LOGGER.info("Inside getAllHotels() method");
     	LOGGER.info("Retrieving Hotel list from DataBase");
     	HotelResponse response = new HotelResponse(hotels,"Hotel list retrieved from Database.");
         return response;
